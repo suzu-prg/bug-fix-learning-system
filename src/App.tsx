@@ -15,6 +15,7 @@ export default class App extends Component {
         super(props);
         
         this.state = {
+            time: 0,
             value: '',
             message: '',
             mutant:
@@ -46,6 +47,7 @@ export default class App extends Component {
         this.handleInput = this.handleInput.bind(this);
         this.reset = this.reset.bind(this);
         this.send = this.send.bind(this);
+        this.stop = this.stop.bind(this);
     }
 
     handleInput(event) {
@@ -69,6 +71,12 @@ export default class App extends Component {
         });
     }
 
+    stop() {
+        this.setState({
+            time: performance.now()
+        });
+    }
+
     render() {
         return (
             <div>
@@ -84,7 +92,9 @@ export default class App extends Component {
                 </div>
                 <button onClick={this.reset}>RESET</button>
                 <button onClick={this.send}>SEND</button>
+                <button onClick={this.stop}>TIMER STOP</button>
                 <div>{this.state.message}</div>
+                <div>{Math.floor(this.state.time / 1000)} sec</div>
             </div>
         );
     }
