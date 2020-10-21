@@ -15,6 +15,7 @@ export default class App extends Component {
         super(props);
         
         this.state = {
+            start: 0,
             time: 0,
             value: '',
             message: '',
@@ -44,6 +45,7 @@ export default class App extends Component {
 }`
         };
         this.state.value = this.state.mutant;
+        this.state.start = performance.now();
         this.handleInput = this.handleInput.bind(this);
         this.reset = this.reset.bind(this);
         this.send = this.send.bind(this);
@@ -73,7 +75,7 @@ export default class App extends Component {
 
     stop() {
         this.setState({
-            time: performance.now()
+            time: performance.now() - this.state.start
         });
     }
 
