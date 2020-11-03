@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 
 class Name extends Component {
     render () {
@@ -10,17 +10,7 @@ class Name extends Component {
     }
 }
 
-export default class App extends Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            start: 0,
-            time: 0,
-            value: '',
-            message: '',
-            mutant:
-`for (i = 1; i < n; i++) {
+const initialMutant = `for (i = 1; i < n; i++) {
     tmp = data[i];
     if (data[i] > tmp) {
         j = i;
@@ -30,9 +20,8 @@ export default class App extends Component {
         } while (j > 0 && data[j] > tmp);
         data[j] = tmp;
     }
-}`,
-            answer:
-`for (i = 1; i < n; i++) {
+}`;
+const initialAnswer = `for (i = 1; i < n; i++) {
     tmp = data[i];
     if (data[i - 1] > tmp) {
         j = i;
@@ -42,62 +31,47 @@ export default class App extends Component {
         } while (j > 0 && data[j - 1] > tmp);
         data[j] = tmp;
     }
-}`
-        };
-        this.state.value = this.state.mutant;
-        this.state.start = performance.now();
-        this.handleInput = this.handleInput.bind(this);
-        this.reset = this.reset.bind(this);
-        this.send = this.send.bind(this);
-        this.stop = this.stop.bind(this);
-    }
+}`;
 
-    handleInput(event) {
-        let value = event.target.value;
-        this.setState({
-            value: value
-        });
-    }
-
-    reset() {
-        this.setState({
-            value: this.state.mutant
-        });
-    }
-
-
-    send() {
-        const { value } = this.state;
-        this.setState({
-            message: value.replace(/\s|\r?\n/g, "") == this.state.answer.replace(/\s|\r?\n/g, "") ? "correct!" : "wrong"
-        });
-    }
-
-    stop() {
-        this.setState({
-            time: performance.now() - this.state.start
-        });
-    }
-
-    render() {
-        return (
+export const App: React.FC = () => {
+    const [start, setStart] = useState<number>(performance.now());
+    const [time, setTime] = useState<number>(0);
+    const [value, setValue] = useState<string>(initialMutant);
+    const [message, setMessage] = useState<string>('');
+    const [mutant, setMutant] = useState<string>(initialMutant);
+    const [answer, setAnswer] = useState<string>(initialAnswer);
+    
+    const handleInput = (event: any): void => {
+        const value = event.target.value;
+        setValue(value);
+    };
+    const reset = (): void => {
+        setValue(mutant);
+    };
+    const send = (): void => {
+        setMessage(value.replace(/\s|\r?\n/g, "") == answer.replace(/\s|\r?\n/g, "") ? "correct!" : "wrong")
+    };
+    const stop = (): void => {
+        setTime(performance.now() - start);
+    };
+    
+    return (
+        <div>
+            <head>
+                <title>bug-fix-learning-system</title>
+            </head>
             <div>
-                <head>
-                    <title>bug-fix-learning-system</title>
-                </head>
-                <div>
-                    <textarea type="text" value={this.state.value} onChange={this.handleInput} style={{
-                        resize: "none",
-                        width: 300,
-                        height: 300
-                    }} multiline />
-                </div>
-                <button onClick={this.reset}>RESET</button>
-                <button onClick={this.send}>SEND</button>
-                <button onClick={this.stop}>TIMER STOP</button>
-                <div>{this.state.message}</div>
-                <div>{Math.floor(this.state.time / 1000)} sec</div>
+                <textarea type="text" value={value} onChange={handleInput} style={{
+                    resize: "none",
+                    width: 300,
+                    height: 300
+                }} multiline />
             </div>
-        );
-    }
-}
+            <button onClick={reset}>RESET</button>
+            <button onClick={send}>SEND</button>
+            <button onClick={stop}>TIMER STOP</button>
+            <div>{message}</div>
+            <div>{Math.floor(time / 1000)} sec</div>
+        </div>
+    );
+};
