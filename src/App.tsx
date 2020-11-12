@@ -45,12 +45,3 @@ function Home() {
         </div>
     );
 }
-
-function About() {
-    const { aboutId } = useParams();
-    return <h2>About: {aboutId}</h2>;
-}
-
-function Users() {
-    return <h2>Users</h2>;
-}

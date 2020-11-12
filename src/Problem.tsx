@@ -1,14 +1,5 @@
 import React, { Component, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-class Name extends Component {
-    render () {
-        const name = this.props.name;
-
-        return (
-            name
-        );
-    }
-}
 
 const initialMutant: string[] = ['',
 `for (i = 1; i < n; i++) {
