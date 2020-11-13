@@ -12,9 +12,6 @@ export const App: React.FC = () => {
     return (
         <Router>
             <div>
-                <head>
-                    <title>bug-fix-learning-system</title>
-                </head>
                 <Switch>
                     <Route path="/problem/:problemId">
                         <Problem />
