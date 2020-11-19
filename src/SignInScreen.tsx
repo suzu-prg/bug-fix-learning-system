@@ -1,7 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-
 const uiConfig = {
     signInFlow: 'popup',
     signInSuccessUrl: "/",
@@ -16,7 +15,7 @@ const uiConfig = {
     ],
 }
 
-const SignInScreen = (props) => {
+export const SignInScreen:React.FC = () => {
     return (
         <div>
             <p>Please sign-in:</p>

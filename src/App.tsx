@@ -12,36 +12,35 @@ import { SignInScreen } from './SignInScreen';
 import { render } from 'react-dom';
 
 export const App: React.FC = () => {
-    state = {
-        loading: true,
-        user: null
-    };
-    const componentDidMount = (): void => {
-        firebase.auth().onAuthStateChanged(user => {
-            this.setState({
-                loading: false,
-                user: user
-            });
-        });
-    };
+    // const state = {
+    //     loading: true,
+    //     user: null
+    // };
+    // const componentDidMount = (): void => {
+    //     firebase.auth().onAuthStateChanged(user => {
+    //         this.setState({
+    //             loading: false,
+    //             user: user
+    //         });
+    //     });
+    // };
 
-    const logout = (): void => {
-        firebase.auth().signOut();
-    }
-
-    const render = (): void => {
-        if(this.state.loading) return <div>loading</div>;
-        return (
-            <div>
-                Uername: {this.state.user && this.state.user.displayName}
-                <br />
-                {this.state.user ? 
-                (<button onClick={this.logout}>Logout </button>) :
-                (<SignInScreen />)
-            }
-            </div>
+    // const logout = (): void => {
+    //     firebase.auth().signOut();
+    // }
+    // const render = (): void => {
+    //     if(this.state.loading) return <div>loading</div>;
+return (<div><SignInScreen /></div>
+            // <div>
+            //     Uername: {this.state.user && this.state.user.displayName}
+            //     <br />
+            //     {this.state.user ? 
+            //     (<button onClick={this.logout}>Logout </button>) :
+            //     (<SignInScreen />)
+            // }
+            // </div>
         );
-    }
+    // }
 
     // return (
     //     <Router>
