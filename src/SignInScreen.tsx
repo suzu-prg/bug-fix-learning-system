@@ -8,7 +8,7 @@ const config = {
     authDomain: 'bug-fix-learning-system.firebaseapp.com',
     // ...
 };
-firebase.initializeApp(config);
+// firebase.initializeApp(config);
 
 const uiConfig = {
     signInFlow: 'popup',

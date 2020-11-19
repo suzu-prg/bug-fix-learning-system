@@ -11,6 +11,13 @@ import firebase from 'firebase';
 import { SignInScreen } from './SignInScreen';
 import { render } from 'react-dom';
 
+const config = {
+    apiKey: 'AIzaSyBLCJEWmOK7zqDah-h-ik3qPKQDsJgdNIk',
+    authDomain: 'bug-fix-learning-system.firebaseapp.com',
+    // ...
+};
+const firebaseApp = firebase.initializeApp(config);
+
 export const App: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [myAccount, setMyAccount] = useState<firebase.User>();
@@ -26,7 +33,8 @@ export const App: React.FC = () => {
 
 
     const logout = (): void => {
-        firebase.auth().signOut();
+        firebaseApp.auth().signOut();
+        setMyAccount();
     }
 
     return (
