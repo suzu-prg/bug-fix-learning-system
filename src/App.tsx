@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -12,50 +12,50 @@ import { SignInScreen } from './SignInScreen';
 import { render } from 'react-dom';
 
 export const App: React.FC = () => {
-    // const state = {
-    //     loading: true,
-    //     user: null
-    // };
-    // const componentDidMount = (): void => {
-    //     firebase.auth().onAuthStateChanged(user => {
-    //         this.setState({
-    //             loading: false,
-    //             user: user
-    //         });
-    //     });
-    // };
+    const [loading, setLoading] = useState(true);
+    const [myAccount, setMyAccount] = useState<firebase.User>();
 
-    // const logout = (): void => {
-    //     firebase.auth().signOut();
-    // }
-    // const render = (): void => {
-    //     if(this.state.loading) return <div>loading</div>;
-return (<div><SignInScreen /></div>
-            // <div>
-            //     Uername: {this.state.user && this.state.user.displayName}
-            //     <br />
-            //     {this.state.user ? 
-            //     (<button onClick={this.logout}>Logout </button>) :
-            //     (<SignInScreen />)
-            // }
-            // </div>
-        );
-    // }
 
-    // return (
-    //     <Router>
-    //         <div>
-    //             <Switch>
-    //                 <Route path="/problem/:problemId">
-    //                     <Problem />
-    //                 </Route>
-    //                 <Route path="/">
-    //                     <Home />
-    //                 </Route>
-    //             </Switch>
-    //         </div>
-    //     </Router>
-    // )
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((user) => {
+            setLoading(false);
+            if (!user) return;
+            setMyAccount(user);
+        });
+    });
+
+
+    const logout = (): void => {
+        firebase.auth().signOut();
+    }
+
+    return (
+        <div>
+            {loading ? (
+                <p>
+                    loading...
+                </p>
+            ) : !myAccount ? (
+                <div>
+                    <SignInScreen />
+                </div>
+            ) :
+                <Router>
+                    <div>
+                        <Switch>
+                            <Route path="/problem/:problemId">
+                                <Problem />
+                            </Route>
+                            <Route path="/">
+                                <Home />
+                                <button onClick={() => logout()}>Logout</button>
+                            </Route>
+                        </Switch>
+                    </div>
+                </Router>
+            }
+        </div>
+    );
 }
 
 function Home() {
