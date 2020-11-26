@@ -104,6 +104,9 @@ export const Problem: React.FC = () => {
             <div>{message}</div>
             <div>{Math.floor(time / 1000)} sec</div>
             <div>
+                <Link to={"/quiz/" + problemIndex + "/1"}>Proceed to a quiz page</Link>
+            </div>
+            <div>
                 <Link to="/">Return to the top page</Link>
             </div>
         </div>

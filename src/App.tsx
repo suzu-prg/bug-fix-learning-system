@@ -6,6 +6,7 @@ import {
     Link,
 } from "react-router-dom";
 import { Problem } from './Problem';
+import { Quiz } from './Quiz';
 import firebase from 'firebase';
 import { SignInScreen } from './SignInScreen';
 import {useCollectionData} from "react-firebase-hooks/firestore";
@@ -46,6 +47,9 @@ export const App: React.FC = () => {
                 <Router>
                     <div>
                         <Switch>
+                            <Route path="/quiz/:quizId">
+                                <Quiz />
+                            </Route>
                             <Route path="/problem/:problemId">
                                 <Problem />
                             </Route>
