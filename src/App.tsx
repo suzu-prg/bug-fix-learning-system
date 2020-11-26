@@ -4,24 +4,19 @@ import {
     Switch,
     Route,
     Link,
-    useParams
 } from "react-router-dom";
 import { Problem } from './Problem';
 import firebase from 'firebase';
 import { SignInScreen } from './SignInScreen';
-import { render } from 'react-dom';
-
-const config = {
-    apiKey: 'AIzaSyBLCJEWmOK7zqDah-h-ik3qPKQDsJgdNIk',
-    authDomain: 'bug-fix-learning-system.firebaseapp.com',
-    // ...
-};
-const firebaseApp = firebase.initializeApp(config);
+import {useCollectionData} from "react-firebase-hooks/firestore";
+import {firebaseApp, firestore} from "./firebaseApp";
 
 export const App: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [myAccount, setMyAccount] = useState<firebase.User>();
 
+    const [tests, testsLoading, testsError] = useCollectionData(firestore.collection('tests'));
+    console.log(tests, testsLoading, testsError);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
@@ -34,7 +29,7 @@ export const App: React.FC = () => {
 
     const logout = (): void => {
         firebaseApp.auth().signOut();
-        setMyAccount();
+        setMyAccount(undefined);
     }
 
     return (
@@ -69,7 +64,7 @@ export const App: React.FC = () => {
 function Home() {
     return (
         <div>
-            <h2>Select a problrem</h2>
+            <h2>Select a problem</h2>
             <nav>
                 <ul>
                     <li>
