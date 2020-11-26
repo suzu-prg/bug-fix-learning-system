@@ -60,15 +60,21 @@ void hanoi(int N, int d)
 ];
 // replaced "\n" with "\\n"
 
+interface Params {
+    problemId?: string;
+}
+
 export const Problem: React.FC = () => {
-    const { problemId } = useParams();
+    const { problemId } = useParams<Params>();
+    const problemIndex = Number(problemId) || 0;
+
     const [start, setStart] = useState<number>(performance.now());
     const [time, setTime] = useState<number>(0);
-    const [value, setValue] = useState<string>(initialMutant[problemId]);
+    const [value, setValue] = useState<string>(initialMutant[problemIndex]);
     const [message, setMessage] = useState<string>('');
-    const [mutant, setMutant] = useState<string>(initialMutant[problemId]);
-    const [answer, setAnswer] = useState<string>(initialAnswer[problemId]);
-    
+    const [mutant, setMutant] = useState<string>(initialMutant[problemIndex]);
+    const [answer, setAnswer] = useState<string>(initialAnswer[problemIndex]);
+
     const handleInput = (event: any): void => {
         const value = event.target.value;
         setValue(value);
@@ -82,22 +88,22 @@ export const Problem: React.FC = () => {
     const stop = (): void => {
         setTime(performance.now() - start);
     };
-    
+
     return (
         <div>
             <div>
-                <textarea type="text" value={value} onChange={handleInput} style={{
+                <textarea value={value} onChange={handleInput} style={{
                     resize: "none",
                     width: 300,
                     height: 300
-                }} multiline />
+                }} />
             </div>
             <button onClick={reset}>RESET</button>
             <button onClick={send}>SEND</button>
             <button onClick={stop}>TIMER STOP</button>
             <div>{message}</div>
             <div>{Math.floor(time / 1000)} sec</div>
-            <div>          
+            <div>
                 <Link to="/">Return to the top page</Link>
             </div>
         </div>
