@@ -1,3 +1,9 @@
+/*
+  3問目の問題文の改行ができてない問題をなんとかする
+  2問目のフローチャート画像を表示する
+  最初のページに戻る時にリロードしないと表示されない件を調査する
+*/
+
 import React, { Component, useState } from 'react';
 import {
     useParams,
@@ -7,6 +13,8 @@ import {
     Link,
     useHistory
 } from "react-router-dom";
+import { firebaseApp, firestore } from "./firebaseApp";
+import firebase from 'firebase';
 
 const choice: string[][] = [
     [],
@@ -73,15 +81,22 @@ const answer3: string[] = [
     '0 2 4 5 6 8 1 9 7 3',
     '1 1'
 ]
-
+interface Params {
+    quizId?: string;
+}
 export const Quiz: React.FC = () => {
-    const { quizId } = useParams();
+    const { quizId } = useParams<Params>();
+    const quizIndex = Number(quizId) || 0;
     const [start, setStart] = useState<number>(performance.now());
-    const [time, setTime] = useState<number>(0);
+    const [time1, setTime1] = useState<number>(0);
+    const [time2, setTime2] = useState<number>(0);
+    const [time3, setTime3] = useState<number>(0);
     const [value1, setValue1] = useState<number>(0);
     const [value2, setValue2] = useState<string>('');
     const [value3, setValue3] = useState<string>('');
-    const [message, setMessage] = useState<string>('');
+    const [message1, setMessage1] = useState<string>('');
+    const [message2, setMessage2] = useState<string>('');
+    const [message3, setMessage3] = useState<string>('');
     // const history = useHistory();
 
     const handleInput2 = (event: any): void => {
@@ -93,18 +108,31 @@ export const Quiz: React.FC = () => {
         setValue3(value);
     };
     const send1 = (): void => {
-        setTime(performance.now() - start);
-        setMessage(value1 == answer1[quizId] ? "correct!" : "wrong")
+        setTime1(performance.now());
+        setMessage1(value1 == answer1[quizIndex] ? "correct" : "wrong");
         // history.push("/quiz/" + quizId + "/2");
     };
     const send2 = (): void => {
-        setTime(performance.now() - start);
-        setMessage(value2.replace(/\s|\r?\n/g, "") == answer2[quizId].replace(/\s|\r?\n/g, "") ? "correct!" : "wrong")
+        setTime2(performance.now());
+        setMessage2(value2.replace(/\s|\r?\n/g, "") == answer2[quizIndex].replace(/\s|\r?\n/g, "") ? "correct" : "wrong");
         // history.push("/quiz/" + quizId + "/3");
     };
     const send3 = (): void => {
-        setTime(performance.now() - start);
-        setMessage(value3.replace(/\s|\r?\n/g, "") == answer3[quizId].replace(/\s|\r?\n/g, "") ? "correct!" : "wrong")
+        setTime3(performance.now());
+        setMessage3(value3.replace(/\s|\r?\n/g, "") == answer3[quizIndex].replace(/\s|\r?\n/g, "") ? "correct" : "wrong");
+        // time3, message3 反映前にfirestore.collectionが呼ばれてしまう
+        firestore.collection('quiz' + quizIndex).add({
+            uid: firebase.auth().currentUser?.uid,
+            value1: value1,
+            value2: value2,
+            value3: value3,
+            message1: message1,
+            message2: message2,
+            message3: value3.replace(/\s|\r?\n/g, "") == answer3[quizIndex].replace(/\s|\r?\n/g, "") ? "correct!" : "wrong",
+            time1: (time1 - start) / 1000,
+            time2: (time2 - time1) / 1000,
+            time3: (performance.now() - time2) / 1000
+        });
         // history.push('/');
     };
 
@@ -114,18 +142,20 @@ export const Quiz: React.FC = () => {
                 <Switch>
                     <Route path="/quiz/:quizId/1">
                         <div>
-                            this is a quiz {quizId} page!
+                            this is a quiz {quizIndex} page!
                             <p>
-                                <input type="radio" name="test" value="1" onChange={() => setValue1(1)} />　{choice[quizId][1]} <br />
-                                <input type="radio" name="test" value="2" onChange={() => setValue1(2)} />　{choice[quizId][2]} <br />
-                                <input type="radio" name="test" value="3" onChange={() => setValue1(3)} />　{choice[quizId][3]} <br />
-                                <input type="radio" name="test" value="4" onChange={() => setValue1(4)} />　{choice[quizId][4]} <br />
-                                <div> {message} </div>
-                                <div>{Math.floor(time / 1000)} sec</div>
-                                <button onClick={send1}>SEND</button>
-                                <li>
-                                    <Link to={"/quiz/" + quizId + "/2"}>next</Link>
-                                </li>
+                                <input type="radio" name="test" value="1" onChange={() => setValue1(1)} />　{choice[quizIndex][1]} <br />
+                                <input type="radio" name="test" value="2" onChange={() => setValue1(2)} />　{choice[quizIndex][2]} <br />
+                                <input type="radio" name="test" value="3" onChange={() => setValue1(3)} />　{choice[quizIndex][3]} <br />
+                                <input type="radio" name="test" value="4" onChange={() => setValue1(4)} />　{choice[quizIndex][4]} <br />
+                                <div> {message1} </div>
+                                <div>{Math.floor(time1 / 1000)} sec</div>
+                                <Link to={"/quiz/" + quizIndex + "/2"}>
+                                    <button onClick={send1}>SEND</button>
+                                </Link>
+                                {/* <li>
+                                    <Link to={"/quiz/" + quizIndex + "/2"}>next</Link>
+                                </li> */}
                             </p>
                         </div>
                     </Route>
@@ -137,28 +167,32 @@ export const Quiz: React.FC = () => {
                                 width: 100,
                                 height: 15
                             }} />
-                            <div> {message} </div>
-                            <div>{Math.floor(time / 1000)} sec</div>
-                            <button onClick={send2}>SEND</button>
-                            <li>
-                                <Link to={"/quiz/" + quizId + "/3"}>next</Link>
-                            </li>
+                            <div> {message2} </div>
+                            <div>{Math.floor(time2 / 1000)} sec</div>
+                            <Link to={"/quiz/" + quizIndex + "/3"}>
+                                <button onClick={send2}>SEND</button>
+                            </Link>
+                            {/* <li>
+                                <Link to={"/quiz/" + quizIndex + "/3"}>next</Link>
+                            </li> */}
                         </div>
                     </Route>
                     <Route path="/quiz/:quizId/3">
                         <div>
-                            {statement3[quizId]} <br />
+                            {statement3[quizIndex]} <br />
                             <textarea value={value3} onChange={handleInput3} style={{
                                 resize: "none",
                                 width: 100,
                                 height: 15
                             }} />
-                            <div> {message} </div>
-                            <div>{Math.floor(time / 1000)} sec</div>
-                            <button onClick={send3}>SEND</button>
-                            <li>
+                            <div> {message3} </div>
+                            <div>{Math.floor(time3 / 1000)} sec</div>
+                            <Link to="/">
+                                <button onClick={send3}>SEND</button>
+                            </Link>
+                            {/* <li>
                                 <Link to="/">Return to the top page</Link>
-                            </li>
+                            </li> */}
                         </div>
                     </Route>
                 </Switch>

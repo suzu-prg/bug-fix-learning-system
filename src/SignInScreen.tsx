@@ -2,14 +2,6 @@ import React from 'react';
 import firebase from 'firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
-// Configure Firebase.
-const config = {
-    apiKey: 'AIzaSyBLCJEWmOK7zqDah-h-ik3qPKQDsJgdNIk',
-    authDomain: 'bug-fix-learning-system.firebaseapp.com',
-    // ...
-};
-// firebase.initializeApp(config);
-
 const uiConfig = {
     signInFlow: 'popup',
     signInSuccessUrl: "/",

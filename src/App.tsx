@@ -1,3 +1,7 @@
+/*
+    firebase.auth().currentUser.uid みたいなので現在のユーザー名を取得できそう
+*/
+
 import React, { useState, useEffect } from 'react';
 import {
     BrowserRouter as Router,
@@ -7,6 +11,7 @@ import {
 } from "react-router-dom";
 import { Problem } from './Problem';
 import { Quiz } from './Quiz';
+import { Read } from './Read';
 import firebase from 'firebase';
 import { SignInScreen } from './SignInScreen';
 import {useCollectionData} from "react-firebase-hooks/firestore";
@@ -16,8 +21,20 @@ export const App: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [myAccount, setMyAccount] = useState<firebase.User>();
 
-    const [tests, testsLoading, testsError] = useCollectionData(firestore.collection('tests'));
-    console.log(tests, testsLoading, testsError);
+    // const [tests, testsLoading, testsError] = useCollectionData(firestore.collection('tests'));
+    // console.log(tests, testsLoading, testsError);
+
+    // firestore.collection('tests').add({
+    //     createAt: firebase.firestore.FieldValue.serverTimestamp()
+    // });
+
+    // firestore.collection('tests').doc('sub').set({
+    //     name: "suzu"
+    // });
+
+    // firestore.collection('tests').doc('sub').set({
+    //     name2: "suzu2"
+    // }, {merge: true});
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
@@ -26,7 +43,6 @@ export const App: React.FC = () => {
             setMyAccount(user);
         });
     });
-
 
     const logout = (): void => {
         firebaseApp.auth().signOut();
@@ -53,6 +69,9 @@ export const App: React.FC = () => {
                             <Route path="/problem/:problemId">
                                 <Problem />
                             </Route>
+                            <Route path="/read/:readId">
+                                <Read />
+                            </Route>
                             <Route path="/">
                                 <Home />
                                 <button onClick={() => logout()}>Logout</button>
@@ -75,7 +94,13 @@ function Home() {
                         <Link to="/problem/1">Problem 1</Link>
                     </li>
                     <li>
+                        <Link to="/read/1">Read 1</Link>
+                    </li>
+                    <li>
                         <Link to="/problem/2">Problem 2</Link>
+                    </li>
+                    <li>
+                        <Link to="/read/2">Read 2</Link>
                     </li>
                 </ul>
             </nav>
