@@ -1,10 +1,10 @@
 import React, { Component, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import {firebaseApp, firestore} from "./firebaseApp";
+import { firebaseApp, firestore } from "./firebaseApp";
 import firebase from 'firebase';
 
 const initialCode: string[] = ['',
-`for (i = 1; i < n; i++) {
+    `for (i = 1; i < n; i++) {
     tmp = data[i];
     if (data[i - 1] > tmp) {
         j = i;
@@ -15,7 +15,7 @@ const initialCode: string[] = ['',
         data[j] = tmp;
     }
 }`,
-`// 呼び出しは hanoi(N, 1);
+    `// 呼び出しは hanoi(N, 1);
 void shift(int N, int d)
 {
   if (d == 1)
@@ -66,10 +66,10 @@ export const Read: React.FC = () => {
             uid: firebase.auth().currentUser?.uid,
             bugFix: false,
             message: '',
-            time: (performance.now() - start)/1000
+            time: (performance.now() - start) / 1000
         });
         // ここでページ移動したい
-        
+
     };
 
     return (
@@ -81,14 +81,17 @@ export const Read: React.FC = () => {
                     height: 300
                 }} />
             </div>
-            <button onClick={stop}>TIMER STOP</button>
-            <div>{Math.floor(time / 1000)} sec</div>
-            <div>
+            <Link to={"/quiz/" + readIndex + "/1"}>
+                <button onClick={stop}>FINISH</button>
+            </Link>
+
+            {/* <div>{Math.floor(time / 1000)} sec</div> */}
+            {/* <div>
                 <Link to={"/quiz/" + readIndex + "/1"}>Proceed to a quiz page</Link>
             </div>
             <div>
                 <Link to="/">Return to the top page</Link>
-            </div>
+            </div> */}
         </div>
     );
 };

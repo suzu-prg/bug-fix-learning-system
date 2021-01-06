@@ -21,6 +21,11 @@ module.exports = {
           cacheDirectory: false,
         },
       },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: 'file-loader',
+        options: {},
+      }
     ],
   },
   plugins: [

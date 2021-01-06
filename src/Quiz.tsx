@@ -1,5 +1,4 @@
 /*
-  3問目の問題文の改行ができてない問題をなんとかする
   2問目のフローチャート画像を表示する
   最初のページに戻る時にリロードしないと表示されない件を調査する
 */
@@ -97,7 +96,6 @@ export const Quiz: React.FC = () => {
     const [message1, setMessage1] = useState<string>('');
     const [message2, setMessage2] = useState<string>('');
     const [message3, setMessage3] = useState<string>('');
-    // const history = useHistory();
 
     const handleInput2 = (event: any): void => {
         const value = event.target.value;
@@ -110,12 +108,10 @@ export const Quiz: React.FC = () => {
     const send1 = (): void => {
         setTime1(performance.now());
         setMessage1(value1 == answer1[quizIndex] ? "correct" : "wrong");
-        // history.push("/quiz/" + quizId + "/2");
     };
     const send2 = (): void => {
         setTime2(performance.now());
         setMessage2(value2.replace(/\s|\r?\n/g, "") == answer2[quizIndex].replace(/\s|\r?\n/g, "") ? "correct" : "wrong");
-        // history.push("/quiz/" + quizId + "/3");
     };
     const send3 = (): void => {
         setTime3(performance.now());
@@ -133,7 +129,6 @@ export const Quiz: React.FC = () => {
             time2: (time2 - time1) / 1000,
             time3: (performance.now() - time2) / 1000
         });
-        // history.push('/');
     };
 
     return (
@@ -149,7 +144,7 @@ export const Quiz: React.FC = () => {
                                 <input type="radio" name="test" value="3" onChange={() => setValue1(3)} />　{choice[quizIndex][3]} <br />
                                 <input type="radio" name="test" value="4" onChange={() => setValue1(4)} />　{choice[quizIndex][4]} <br />
                                 <div> {message1} </div>
-                                <div>{Math.floor(time1 / 1000)} sec</div>
+                                {/* <div>{Math.floor(time1 / 1000)} sec</div> */}
                                 <Link to={"/quiz/" + quizIndex + "/2"}>
                                     <button onClick={send1}>SEND</button>
                                 </Link>
@@ -162,13 +157,14 @@ export const Quiz: React.FC = () => {
                     <Route path="/quiz/:quizId/2">
                         <div>
                             [ここにフローチャートの画像] <br />
+                            <img src={'../materials/' + quizIndex + '.jpg'} />
                             <textarea value={value2} onChange={handleInput2} style={{
                                 resize: "none",
                                 width: 100,
                                 height: 15
                             }} />
                             <div> {message2} </div>
-                            <div>{Math.floor(time2 / 1000)} sec</div>
+                            {/* <div>{Math.floor(time2 / 1000)} sec</div> */}
                             <Link to={"/quiz/" + quizIndex + "/3"}>
                                 <button onClick={send2}>SEND</button>
                             </Link>
@@ -179,14 +175,14 @@ export const Quiz: React.FC = () => {
                     </Route>
                     <Route path="/quiz/:quizId/3">
                         <div>
-                            {statement3[quizIndex]} <br />
+                            <pre><code>{statement3[quizIndex]}</code></pre>
                             <textarea value={value3} onChange={handleInput3} style={{
                                 resize: "none",
                                 width: 100,
                                 height: 15
                             }} />
                             <div> {message3} </div>
-                            <div>{Math.floor(time3 / 1000)} sec</div>
+                            {/* <div>{Math.floor(time3 / 1000)} sec</div> */}
                             <Link to="/">
                                 <button onClick={send3}>SEND</button>
                             </Link>
