@@ -3,12 +3,13 @@
   最初のページに戻る時にリロードしないと表示されない件を調査する
 */
 
-import React, { useState } from "react";
-import { Link, Route, useParams } from "react-router-dom";
+import React, { ChangeEvent, useState } from "react";
+import { Link, Route, useParams, useHistory } from "react-router-dom";
 import { firestore } from "./firebaseApp";
 import firebase from "firebase";
 import algorithmImage1 from "./img/algorithm1.jpg";
 import algorithmImage2 from "./img/algorithm2.jpg";
+import { useForm } from "react-hook-form";
 
 const algorithmImages = [, algorithmImage1, algorithmImage2];
 
@@ -115,42 +116,41 @@ interface Params {
 export const Quiz: React.FC = () => {
   const { quizId } = useParams<Params>();
   const quizIndex = Number(quizId) || 0;
-  const [start, setStart] = useState<number>(performance.now());
-  const [time1, setTime1] = useState<number>(0);
-  const [time2, setTime2] = useState<number>(0);
-  const [time3, setTime3] = useState<number>(0);
-  const [value1, setValue1] = useState<number>(0);
-  const [value2, setValue2] = useState<string>("");
-  const [value3, setValue3] = useState<string>("");
-  const [message1, setMessage1] = useState<string>("");
-  const [message2, setMessage2] = useState<string>("");
-  const [message3, setMessage3] = useState<string>("");
+  const [start, setStart] = useState(performance.now());
+  const [time1, setTime1] = useState(0);
+  const [time2, setTime2] = useState(0);
+  const [time3, setTime3] = useState(0);
+  const [value1, setValue1] = useState(0);
+  const [value2, setValue2] = useState("");
+  const [value3, setValue3] = useState("");
+  const [message1, setMessage1] = useState("");
+  const [message2, setMessage2] = useState("");
+  const [message3, setMessage3] = useState("");
+  const history = useHistory();
+  const { register, handleSubmit, errors } = useForm();
 
-  const handleInput2 = (event: any): void => {
-    const value = event.target.value;
-    setValue2(value);
-  };
-  const handleInput3 = (event: any): void => {
-    const value = event.target.value;
-    setValue3(value);
-  };
-  const send1 = (): void => {
+  console.log(errors);
+
+  const send1 = (value: number): void => {
     setTime1(performance.now());
-    setMessage1(value1 == answer1[quizIndex] ? "correct" : "wrong");
+    setValue1(value);
+    setMessage1(value === answer1[quizIndex] ? "correct" : "wrong");
   };
-  const send2 = (): void => {
+  const send2 = (value: string): void => {
     setTime2(performance.now());
+    setValue2(value);
     setMessage2(
-      value2.replace(/\s|\r?\n/g, "") ==
+      value.replace(/\s|\r?\n/g, "") ===
         answer2[quizIndex].replace(/\s|\r?\n/g, "")
         ? "correct"
         : "wrong"
     );
   };
-  const send3 = (): void => {
+  const send3 = (value: string): void => {
     setTime3(performance.now());
+    setValue3(value);
     setMessage3(
-      value3.replace(/\s|\r?\n/g, "") ==
+      value.replace(/\s|\r?\n/g, "") ===
         answer3[quizIndex].replace(/\s|\r?\n/g, "")
         ? "correct"
         : "wrong"
@@ -160,11 +160,11 @@ export const Quiz: React.FC = () => {
       uid: firebase.auth().currentUser?.uid,
       value1: value1,
       value2: value2,
-      value3: value3,
+      value3: value,
       message1: message1,
       message2: message2,
       message3:
-        value3.replace(/\s|\r?\n/g, "") ==
+        value.replace(/\s|\r?\n/g, "") ===
         answer3[quizIndex].replace(/\s|\r?\n/g, "")
           ? "correct!"
           : "wrong",
@@ -178,48 +178,49 @@ export const Quiz: React.FC = () => {
     <>
       <Route path="/quiz/:quizId/1">
         <div>
-          {/* this is a quiz {quizIndex} page! */}
           以下の4つの文章の中から，{algorithmName[quizIndex]}
           について正しい内容を述べている文章を1つ選んでください
-          <div>
-            <input
-              type="radio"
-              name="test"
-              value="1"
-              onChange={() => setValue1(1)}
-            />
-            　{choice[quizIndex][1]} <br />
-            <input
-              type="radio"
-              name="test"
-              value="2"
-              onChange={() => setValue1(2)}
-            />
-            　{choice[quizIndex][2]} <br />
-            <input
-              type="radio"
-              name="test"
-              value="3"
-              onChange={() => setValue1(3)}
-            />
-            　{choice[quizIndex][3]} <br />
-            <input
-              type="radio"
-              name="test"
-              value="4"
-              onChange={() => setValue1(4)}
-            />
-            　{choice[quizIndex][4]} <br />
-            <div> {message1} </div>
-            {/* <div>{Math.floor(time1 / 1000)} sec</div> */}
-            <Link to={"/quiz/" + quizIndex + "/2"}>
-              <button onClick={send1}>SEND</button>
-            </Link>
-            {/* <li>
-                                    <Link to={"/quiz/" + quizIndex + "/2"}>next</Link>
-                                </li> */}
-          </div>
         </div>
+        <form
+          onSubmit={handleSubmit((data) => {
+            send1(Number(data.answer));
+            history.push(`/quiz/${quizIndex}/2`);
+          })}
+        >
+          <input
+            type="radio"
+            name="answer"
+            value="1"
+            ref={register({ required: true })}
+          />
+          {choice[quizIndex][1]} <br />
+          <input
+            type="radio"
+            name="answer"
+            value="2"
+            ref={register({ required: true })}
+          />
+          {choice[quizIndex][2]} <br />
+          <input
+            type="radio"
+            name="answer"
+            value="3"
+            ref={register({ required: true })}
+          />
+          {choice[quizIndex][3]} <br />
+          <input
+            type="radio"
+            name="answer"
+            value="4"
+            ref={register({ required: true })}
+          />
+          {choice[quizIndex][4]} <br />
+          <div> {message1} </div>
+          {errors.answer && (
+            <div style={{ color: "red" }}>* 選択肢を一つ選んでください。</div>
+          )}
+          <button type="submit">SEND</button>
+        </form>
       </Route>
       <Route path="/quiz/:quizId/2">
         <div>
@@ -227,23 +228,23 @@ export const Quiz: React.FC = () => {
           <img src={algorithmImages[quizIndex]} />
           上記のフローチャートの空欄に当てはまるコードを答えてください．（セミコロンは不要です）{" "}
           <br />
-          <textarea
-            value={value2}
-            onChange={handleInput2}
-            style={{
-              resize: "none",
-              width: 100,
-              height: 15,
-            }}
-          />
-          <div> {message2} </div>
-          {/* <div>{Math.floor(time2 / 1000)} sec</div> */}
-          <Link to={"/quiz/" + quizIndex + "/3"}>
-            <button onClick={send2}>SEND</button>
-          </Link>
-          {/* <li>
-                                <Link to={"/quiz/" + quizIndex + "/3"}>next</Link>
-                            </li> */}
+          <form
+            onSubmit={handleSubmit((data) => {
+              send2(data.answer);
+              history.push(`/quiz/${quizIndex}/3`);
+            })}
+          >
+            <input
+              name="answer"
+              type="text"
+              ref={register({ required: true })}
+            />
+            <div> {message2} </div>
+            {errors.answer && (
+              <div style={{ color: "red" }}>* 解答を入力してください。</div>
+            )}
+            <button type="submit">SEND</button>
+          </form>
         </div>
       </Route>
       <Route path="/quiz/:quizId/3">
@@ -251,23 +252,23 @@ export const Quiz: React.FC = () => {
           <pre>
             <code>{statement3[quizIndex]}</code>
           </pre>
-          <textarea
-            value={value3}
-            onChange={handleInput3}
-            style={{
-              resize: "none",
-              width: 100,
-              height: 15,
-            }}
-          />
-          <div> {message3} </div>
-          {/* <div>{Math.floor(time3 / 1000)} sec</div> */}
-          <Link to="/">
-            <button onClick={send3}>SEND</button>
-          </Link>
-          {/* <li>
-                                <Link to="/">Return to the top page</Link>
-                            </li> */}
+          <form
+            onSubmit={handleSubmit((data) => {
+              send3(data.answer);
+              history.push("/");
+            })}
+          >
+            <input
+              name="answer"
+              type="text"
+              ref={register({ required: true })}
+            />
+            <div> {message3} </div>
+            {errors.answer && (
+              <div style={{ color: "red" }}>* 解答を入力してください。</div>
+            )}
+            <button type="submit">SEND</button>
+          </form>
         </div>
       </Route>
     </>
