@@ -4,15 +4,20 @@ import { firebaseApp, firestore } from "./firebaseApp";
 import firebase from 'firebase';
 
 const initialMutant: string[] = ['',
-    `for (i = 1; i < n; i++) {
-    tmp = data[i];
-    if (data[i] > tmp) {
-        j = i;
-        do {
-            data[j] = data[j - 1];
-            j++;
-        } while (j > 0 && data[j] > tmp);
-        data[j] = tmp;
+`#define MAX 100000
+int p[MAX];
+
+void Eratosthenes(){
+    for(int i = 0; i < MAX; i++){
+        p[i] = 1;
+    }
+    p[0] = 0; p[1] = 0;
+    for(int i = 2; i < sqrt(MAX); i++){
+        if(!p[i]){
+            for(int j = 0; i * (j + 1) < MAX; j++){
+                p[i * (j + 2)] = 0;
+            }
+        }
     }
 }`,
     `// 呼び出しは hanoi(N, 1);
@@ -29,19 +34,35 @@ void hanoi(int N, int d)
 　　hanoi(N-1, -d);
 　　shift(N-1, d);
 　　hanoi(N-1, d);
-}`];
-// replaced "\n" with "\\n"
-
-const initialAnswer: string[] = ['',
-    `for (i = 1; i < n; i++) {
+}`,
+`for (i = 1; i < n; i++) {
     tmp = data[i];
-    if (data[i - 1] > tmp) {
+    if (data[i] > tmp) {
         j = i;
         do {
             data[j] = data[j - 1];
-            j--;
-        } while (j > 0 && data[j - 1] > tmp);
+            j++;
+        } while (j > 0 && data[j] > tmp);
         data[j] = tmp;
+    }
+}`,];
+// replaced "\n" with "\\n"
+
+const initialAnswer: string[] = ['',
+`#define MAX 100000
+int p[MAX];
+
+void Eratosthenes(){
+    for(int i = 0; i < MAX; i++){
+        p[i] = 1;
+    }
+    p[0] = 0; p[1] = 0;
+    for(int i = 2; i < sqrt(MAX); i++){
+        if(p[i]){
+            for(int j = 0; i * (j + 2) < MAX; j++){
+                p[i * (j + 2)] = 0;
+            }
+        }
     }
 }`,
     `// 呼び出しは hanoi(N, 1);
@@ -58,6 +79,17 @@ void hanoi(int N, int d)
 　　hanoi(N-1, -d);
 　　shift(N, d);
 　　hanoi(N-1, -d);
+}`,
+`for (i = 1; i < n; i++) {
+    tmp = data[i];
+    if (data[i - 1] > tmp) {
+        j = i;
+        do {
+            data[j] = data[j - 1];
+            j--;
+        } while (j > 0 && data[j - 1] > tmp);
+        data[j] = tmp;
+    }
 }`
 ];
 // replaced "\n" with "\\n"
@@ -101,6 +133,12 @@ export const Problem: React.FC = () => {
 
     return (
         <div>
+            <div>
+            配布済みのアルゴリズムに関する解説pdfと下に表示されているコードについて，これらをじっくり読んでください． <br />
+            （コンパイルして実行はしないでください）<br />
+            下に表示されているコードには1~3個のバグが含まれていますので，これを修正してください．<br />
+            バグの内容については，変数の追加や行の追加等は行わなくて済むものになっています． <br />．
+            </div>
             <div>
                 <textarea value={value} onChange={handleInput} style={{
                     resize: "none",

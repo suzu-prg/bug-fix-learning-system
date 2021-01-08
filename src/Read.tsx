@@ -4,7 +4,7 @@ import { firebaseApp, firestore } from "./firebaseApp";
 import firebase from 'firebase';
 
 const initialCode: string[] = ['',
-    `for (i = 1; i < n; i++) {
+`for (i = 1; i < n; i++) {
     tmp = data[i];
     if (data[i - 1] > tmp) {
         j = i;
@@ -29,6 +29,17 @@ void hanoi(int N, int d)
 　　hanoi(N-1, -d);
 　　shift(N, d);
 　　hanoi(N-1, -d);
+}`,
+`for (i = 1; i < n; i++) {
+    tmp = data[i];
+    if (data[i - 1] > tmp) {
+        j = i;
+        do {
+            data[j] = data[j - 1];
+            j--;
+        } while (j > 0 && data[j - 1] > tmp);
+        data[j] = tmp;
+    }
 }`
 ];
 // replaced "\n" with "\\n"
