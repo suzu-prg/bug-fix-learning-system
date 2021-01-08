@@ -190,7 +190,7 @@ export const Quiz: React.FC = () => {
               {/* this is a quiz {quizIndex} page! */}
               以下の4つの文章の中から，{algorithmName[quizIndex]}
               について正しい内容を述べている文章を1つ選んでください
-              <p>
+              <div>
                 <input
                   type="radio"
                   name="test"
@@ -227,7 +227,7 @@ export const Quiz: React.FC = () => {
                 {/* <li>
                                     <Link to={"/quiz/" + quizIndex + "/2"}>next</Link>
                                 </li> */}
-              </p>
+              </div>
             </div>
           </Route>
           <Route path="/quiz/:quizId/2">

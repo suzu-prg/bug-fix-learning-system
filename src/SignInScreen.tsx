@@ -17,7 +17,7 @@ const uiConfig = {
 export const SignInScreen: React.FC = () => {
   return (
     <div>
-      <p>Please sign-in:</p>
+      <div>Please sign-in:</div>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   );

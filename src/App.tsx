@@ -29,7 +29,7 @@ export const App: React.FC = () => {
   return (
     <div>
       {loading ? (
-        <p>loading...</p>
+        <div>loading...</div>
       ) : !myAccount ? (
         <div>
           <SignInScreen />
