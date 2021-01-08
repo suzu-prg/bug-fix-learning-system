@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "build": "rm -f 'dist/.js' && cross-env NODE_ENV=production webpack --bail --colors",
+    "prettier": "prettier --write \"**/{.*/,}*.{css,htm,html,js,json,jsx,md,scss,ts,tsx,vue,yaml,yml}\" \"!**/packages/**\" \"!**/test-fixtures/**\" --color",
     "start": "webpack-dev-server --port 8080",
     "typecheck": "tsc --noEmit --Pretty"
   },
@@ -35,6 +36,7 @@
     "file-loader": "^6.2.0",
     "firebase-tools": "^8.16.1",
     "html-webpack-plugin": "^4.5.0",
+    "prettier": "^2.2.1",
     "typescript": "^4.0.3",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
