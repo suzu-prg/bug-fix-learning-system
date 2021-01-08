@@ -1,6 +1,6 @@
-import React, { Component, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { firebaseApp, firestore } from "./firebaseApp";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { firestore } from "./firebaseApp";
 import firebase from "firebase";
 
 const initialCode: string[] = [

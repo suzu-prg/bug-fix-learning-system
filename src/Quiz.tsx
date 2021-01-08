@@ -3,16 +3,9 @@
   最初のページに戻る時にリロードしないと表示されない件を調査する
 */
 
-import React, { Component, useState } from "react";
-import {
-  useParams,
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory,
-} from "react-router-dom";
-import { firebaseApp, firestore } from "./firebaseApp";
+import React, { useState } from "react";
+import { Link, Route, useParams } from "react-router-dom";
+import { firestore } from "./firebaseApp";
 import firebase from "firebase";
 import algorithmImage1 from "./img/algorithm1.jpg";
 import algorithmImage2 from "./img/algorithm2.jpg";
@@ -182,105 +175,101 @@ export const Quiz: React.FC = () => {
   };
 
   return (
-    <Router>
-      <div>
-        <Switch>
-          <Route path="/quiz/:quizId/1">
-            <div>
-              {/* this is a quiz {quizIndex} page! */}
-              以下の4つの文章の中から，{algorithmName[quizIndex]}
-              について正しい内容を述べている文章を1つ選んでください
-              <div>
-                <input
-                  type="radio"
-                  name="test"
-                  value="1"
-                  onChange={() => setValue1(1)}
-                />
-                　{choice[quizIndex][1]} <br />
-                <input
-                  type="radio"
-                  name="test"
-                  value="2"
-                  onChange={() => setValue1(2)}
-                />
-                　{choice[quizIndex][2]} <br />
-                <input
-                  type="radio"
-                  name="test"
-                  value="3"
-                  onChange={() => setValue1(3)}
-                />
-                　{choice[quizIndex][3]} <br />
-                <input
-                  type="radio"
-                  name="test"
-                  value="4"
-                  onChange={() => setValue1(4)}
-                />
-                　{choice[quizIndex][4]} <br />
-                <div> {message1} </div>
-                {/* <div>{Math.floor(time1 / 1000)} sec</div> */}
-                <Link to={"/quiz/" + quizIndex + "/2"}>
-                  <button onClick={send1}>SEND</button>
-                </Link>
-                {/* <li>
+    <>
+      <Route path="/quiz/:quizId/1">
+        <div>
+          {/* this is a quiz {quizIndex} page! */}
+          以下の4つの文章の中から，{algorithmName[quizIndex]}
+          について正しい内容を述べている文章を1つ選んでください
+          <div>
+            <input
+              type="radio"
+              name="test"
+              value="1"
+              onChange={() => setValue1(1)}
+            />
+            　{choice[quizIndex][1]} <br />
+            <input
+              type="radio"
+              name="test"
+              value="2"
+              onChange={() => setValue1(2)}
+            />
+            　{choice[quizIndex][2]} <br />
+            <input
+              type="radio"
+              name="test"
+              value="3"
+              onChange={() => setValue1(3)}
+            />
+            　{choice[quizIndex][3]} <br />
+            <input
+              type="radio"
+              name="test"
+              value="4"
+              onChange={() => setValue1(4)}
+            />
+            　{choice[quizIndex][4]} <br />
+            <div> {message1} </div>
+            {/* <div>{Math.floor(time1 / 1000)} sec</div> */}
+            <Link to={"/quiz/" + quizIndex + "/2"}>
+              <button onClick={send1}>SEND</button>
+            </Link>
+            {/* <li>
                                     <Link to={"/quiz/" + quizIndex + "/2"}>next</Link>
                                 </li> */}
-              </div>
-            </div>
-          </Route>
-          <Route path="/quiz/:quizId/2">
-            <div>
-              [ここにフローチャートの画像] <br />
-              <img src={algorithmImages[quizIndex]} />
-              上記のフローチャートの空欄に当てはまるコードを答えてください．（セミコロンは不要です）{" "}
-              <br />
-              <textarea
-                value={value2}
-                onChange={handleInput2}
-                style={{
-                  resize: "none",
-                  width: 100,
-                  height: 15,
-                }}
-              />
-              <div> {message2} </div>
-              {/* <div>{Math.floor(time2 / 1000)} sec</div> */}
-              <Link to={"/quiz/" + quizIndex + "/3"}>
-                <button onClick={send2}>SEND</button>
-              </Link>
-              {/* <li>
+          </div>
+        </div>
+      </Route>
+      <Route path="/quiz/:quizId/2">
+        <div>
+          [ここにフローチャートの画像] <br />
+          <img src={algorithmImages[quizIndex]} />
+          上記のフローチャートの空欄に当てはまるコードを答えてください．（セミコロンは不要です）{" "}
+          <br />
+          <textarea
+            value={value2}
+            onChange={handleInput2}
+            style={{
+              resize: "none",
+              width: 100,
+              height: 15,
+            }}
+          />
+          <div> {message2} </div>
+          {/* <div>{Math.floor(time2 / 1000)} sec</div> */}
+          <Link to={"/quiz/" + quizIndex + "/3"}>
+            <button onClick={send2}>SEND</button>
+          </Link>
+          {/* <li>
                                 <Link to={"/quiz/" + quizIndex + "/3"}>next</Link>
                             </li> */}
-            </div>
-          </Route>
-          <Route path="/quiz/:quizId/3">
-            <div>
-              <pre>
-                <code>{statement3[quizIndex]}</code>
-              </pre>
-              <textarea
-                value={value3}
-                onChange={handleInput3}
-                style={{
-                  resize: "none",
-                  width: 100,
-                  height: 15,
-                }}
-              />
-              <div> {message3} </div>
-              {/* <div>{Math.floor(time3 / 1000)} sec</div> */}
-              <Link to="/">
-                <button onClick={send3}>SEND</button>
-              </Link>
-              {/* <li>
+        </div>
+      </Route>
+      <Route path="/quiz/:quizId/3">
+        <div>
+          <pre>
+            <code>{statement3[quizIndex]}</code>
+          </pre>
+          <textarea
+            value={value3}
+            onChange={handleInput3}
+            style={{
+              resize: "none",
+              width: 100,
+              height: 15,
+            }}
+          />
+          <div> {message3} </div>
+          {/* <div>{Math.floor(time3 / 1000)} sec</div> */}
+          <Link to="/">
+            <button onClick={send3}>SEND</button>
+          </Link>
+          {/* <li>
                                 <Link to="/">Return to the top page</Link>
                             </li> */}
-            </div>
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+        </div>
+      </Route>
+    </>
   );
 };

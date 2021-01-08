@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import { Problem } from "./Problem";
 import { Quiz } from "./Quiz";
 import { Read } from "./Read";
 import firebase from "firebase";
 import { SignInScreen } from "./SignInScreen";
-import { firebaseApp, firestore } from "./firebaseApp";
+import { firebaseApp } from "./firebaseApp";
 
 export const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
