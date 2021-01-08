@@ -6,7 +6,12 @@ const mode = isProduction ? "production" : "development";
 
 module.exports = {
   entry: "./src/index.tsx",
-  target: "web",
+  target: 'browserslist',
+  output: {
+    publicPath: '/',
+    filename: '[chunkhash].bundle.mjs',
+    chunkFilename: '[chunkhash].chunk.mjs',
+  },
   mode,
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json", ".jsx"],
