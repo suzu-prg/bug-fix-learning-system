@@ -22,9 +22,11 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(gif|jpe?g|png|svg)$/,
         loader: 'file-loader',
-        options: {},
+        options: {
+          publicPath: '/',
+        },
       }
     ],
   },

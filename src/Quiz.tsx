@@ -14,6 +14,10 @@ import {
 } from "react-router-dom";
 import { firebaseApp, firestore } from "./firebaseApp";
 import firebase from 'firebase';
+import algorithmImage1 from "./img/algorithm1.jpg";
+import algorithmImage2 from "./img/algorithm2.jpg";
+
+const algorithmImages = [, algorithmImage1, algorithmImage2];
 
 const algorithmName: string[] = [
     '',
@@ -192,7 +196,7 @@ export const Quiz: React.FC = () => {
                     <Route path="/quiz/:quizId/2">
                         <div>
                             [ここにフローチャートの画像] <br />
-                            {/* <img src={'../materials/' + quizIndex + '.jpg'} /> */}
+                            <img src={algorithmImages[quizIndex]} />
                             上記のフローチャートの空欄に当てはまるコードを答えてください．（セミコロンは不要です） <br />
                             <textarea value={value2} onChange={handleInput2} style={{
                                 resize: "none",

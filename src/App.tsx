@@ -10,15 +10,13 @@ import { Quiz } from './Quiz';
 import { Read } from './Read';
 import firebase from 'firebase';
 import { SignInScreen } from './SignInScreen';
-// import {useCollectionData} from "react-firebase-hooks/firestore";
 import {firebaseApp, firestore} from "./firebaseApp";
+
 export const App: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [myAccount, setMyAccount] = useState<firebase.User>();
 
-    // const [tests, testsLoading, testsError] = useCollectionData(firestore.collection('tests'));
-    // console.log(tests, testsLoading, testsError);
-
+    console.log(loading, myAccount);
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
@@ -68,7 +66,7 @@ export const App: React.FC = () => {
     );
 }
 
-function Home() {
+export const Home: React.FC = () => {
     return (
         <div>
             <h2>Select a problem</h2>
