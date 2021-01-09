@@ -1,8 +1,3 @@
-/*
-  2問目のフローチャート画像を表示する
-  最初のページに戻る時にリロードしないと表示されない件を調査する
-*/
-
 import React, { useState } from "react";
 import { Route, useHistory, useParams } from "react-router-dom";
 import { firestore } from "../firebaseApp";
@@ -224,8 +219,8 @@ export const QuizPage: React.FC = () => {
       </Route>
       <Route path="/quiz/:quizId/2">
         <div>
-          [ここにフローチャートの画像] <br />
-          <img src={algorithmImages[quizIndex]} />
+          <img src={algorithmImages[quizIndex]} width="60%" height="60%" />
+          <br />
           上記のフローチャートの空欄に当てはまるコードを答えてください．（セミコロンは不要です）{" "}
           <br />
           <form

@@ -3,6 +3,13 @@ import { Link, useParams } from "react-router-dom";
 import { firestore } from "../firebaseApp";
 import firebase from "firebase";
 
+const algorithmName: string[] = [
+  "",
+  "エラトステネスのふるい",
+  "ハノイの塔",
+  "挿入ソート",
+];
+
 const initialMutant: string[] = [
   "",
   `#define MAX 100000
@@ -140,14 +147,25 @@ export const ProblemPage: React.FC = () => {
   return (
     <div>
       <div>
-        配布済みのアルゴリズムに関する解説pdfと下に表示されているコードについて，これらをじっくり読んでください．{" "}
+        <h2>学習パート[バグ修正問題]</h2>
         <br />
-        （コンパイルして実行はしないでください）
+        ・解説pdfの{algorithmName[problemIndex]}のページと下に表示されているコードについて，これらをじっくり読んでください．{" "}
         <br />
-        下に表示されているコードには1~3個のバグが含まれていますので，これを修正してください．
+        ・下に表示されているコードには<strong>1~3個のバグが含まれています．</strong>これを修正してください．
         <br />
-        バグの内容については，変数の追加や行の追加等は行わなくて済むものになっています．{" "}
-        <br />．
+        ・ただし，バグの内容については，変数の追加や行の追加等は行わなくて済むものになっています．{" "}
+        <br />
+        ・手元の環境でコンパイルして実行はしないでください
+        <br />
+        ・RESETボタンで最初の状態に戻ります
+        <br />
+        ・SENDボタンでその修正が正しいかどうかが判定されます（correct or wrong）
+        <br />
+        ・学習が終わったら，FINISHボタンを押してください．
+        <br />
+        ・学習パートを終えるタイミングは自由です．（必ずしもバグ修正が終わったタイミングでなくても構いません）
+        <br />
+        <br />
       </div>
       <div>
         <textarea

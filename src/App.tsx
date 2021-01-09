@@ -15,9 +15,11 @@ export const App: React.FC = () => {
         <div>Loading ...</div>
       ) : (
         <>
-          <div>UserId: {userId}, isFirstGroup: {isFirstGroup ? 'Yes' : 'No'}</div>
+          
           {process.env.NODE_ENV === "development" && (
             <div>
+              UserId: {userId}, isFirstGroup: {isFirstGroup ? 'Yes' : 'No'}
+              <br />
               <button onClick={changeAnonymousUser}>
                 ユーザIDの変更（開発時のみ表示されるデバッグボタン）
               </button>
