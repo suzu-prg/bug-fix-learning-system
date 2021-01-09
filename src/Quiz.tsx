@@ -3,8 +3,8 @@
   最初のページに戻る時にリロードしないと表示されない件を調査する
 */
 
-import React, { ChangeEvent, useState } from "react";
-import { Link, Route, useParams, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { Route, useHistory, useParams } from "react-router-dom";
 import { firestore } from "./firebaseApp";
 import firebase from "firebase";
 import algorithmImage1 from "./img/algorithm1.jpg";
