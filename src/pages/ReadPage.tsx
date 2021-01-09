@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { firestore } from "./firebaseApp";
+import { firestore } from "../firebaseApp";
 import firebase from "firebase";
 
 const initialCode: string[] = [
@@ -49,7 +49,7 @@ interface Params {
   readId?: string;
 }
 
-export const Read: React.FC = () => {
+export const ReadPage: React.FC = () => {
   const { readId } = useParams<Params>();
   const readIndex = Number(readId) || 0;
 

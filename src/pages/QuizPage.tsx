@@ -5,10 +5,10 @@
 
 import React, { useState } from "react";
 import { Route, useHistory, useParams } from "react-router-dom";
-import { firestore } from "./firebaseApp";
+import { firestore } from "../firebaseApp";
 import firebase from "firebase";
-import algorithmImage1 from "./img/algorithm1.jpg";
-import algorithmImage2 from "./img/algorithm2.jpg";
+import algorithmImage1 from "../img/algorithm1.jpg";
+import algorithmImage2 from "../img/algorithm2.jpg";
 import { useForm } from "react-hook-form";
 
 const algorithmImages = [, algorithmImage1, algorithmImage2];
@@ -113,7 +113,7 @@ const answer3: string[] = ["", "7", "1 1", "0 2 4 5 6 8 1 9 7 3"];
 interface Params {
   quizId?: string;
 }
-export const Quiz: React.FC = () => {
+export const QuizPage: React.FC = () => {
   const { quizId } = useParams<Params>();
   const quizIndex = Number(quizId) || 0;
   const [start, setStart] = useState(performance.now());

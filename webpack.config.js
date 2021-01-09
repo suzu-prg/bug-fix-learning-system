@@ -1,7 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 
-const packageJson = require('./package.json');
+const packageJson = require("./package.json");
 
 const isProduction = process.env.NODE_ENV === "production";
 const mode = isProduction ? "production" : "development";
@@ -15,10 +16,10 @@ module.exports = {
     chunkFilename: "[chunkhash].chunk.mjs",
   },
   externals: {
-    firebase: 'firebase',
-    'firebase/app': 'firebase',
-    react: 'React',
-    'react-dom': 'ReactDOM',
+    firebase: "firebase",
+    "firebase/app": "firebase",
+    react: "React",
+    "react-dom": "ReactDOM",
   },
   mode,
   resolve: {
@@ -44,12 +45,15 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(mode),
+    }),
     new HtmlWebpackPlugin({
-      template: path.resolve('src', `index.ejs`),
+      template: path.resolve("src", `index.ejs`),
       templateParameters: {
         isProd: isProduction,
-        firebaseVersion: getDependencyVersion('firebase'),
-        reactVersion: getDependencyVersion('react'),
+        firebaseVersion: getDependencyVersion("firebase"),
+        reactVersion: getDependencyVersion("react"),
       },
     }),
   ],
@@ -63,5 +67,5 @@ module.exports = {
 };
 
 function getDependencyVersion(dependencyName) {
-  return packageJson.dependencies[dependencyName].replace('^', '');
+  return packageJson.dependencies[dependencyName].replace("^", "");
 }

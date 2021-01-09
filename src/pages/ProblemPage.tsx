@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { firestore } from "./firebaseApp";
+import { firestore } from "../firebaseApp";
 import firebase from "firebase";
 
 const initialMutant: string[] = [
@@ -101,7 +101,7 @@ interface Params {
   problemId?: string;
 }
 
-export const Problem: React.FC = () => {
+export const ProblemPage: React.FC = () => {
   const { problemId } = useParams<Params>();
   const problemIndex = Number(problemId) || 0;
 
