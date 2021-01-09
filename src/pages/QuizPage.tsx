@@ -99,12 +99,13 @@ const answer1: number[] = [0, 1, 1, 4];
 
 const answer2: string[] = [
   "",
-  "p[i * (j + 2)] = 0;",
+  "p[i * (j + 2)] = 0",
   "hanoi(N-1, -d)",
   "data[j] = tmp",
 ];
 
 const answer3: string[] = ["", "7", "1 1", "0 2 4 5 6 8 1 9 7 3"];
+
 interface Params {
   quizId?: string;
 }
@@ -161,7 +162,7 @@ export const QuizPage: React.FC = () => {
       message3:
         value.replace(/\s|\r?\n/g, "") ===
         answer3[quizIndex].replace(/\s|\r?\n/g, "")
-          ? "correct!"
+          ? "correct"
           : "wrong",
       time1: (time1 - start) / 1000,
       time2: (time2 - time1) / 1000,
@@ -210,7 +211,7 @@ export const QuizPage: React.FC = () => {
             ref={register({ required: true })}
           />
           {choice[quizIndex][4]} <br />
-          <div> {message1} </div>
+          {/* <div> {message1} </div> */}
           {errors.answer && (
             <div style={{ color: "red" }}>* 選択肢を一つ選んでください。</div>
           )}
@@ -219,7 +220,7 @@ export const QuizPage: React.FC = () => {
       </Route>
       <Route path="/quiz/:quizId/2">
         <div>
-          <img src={algorithmImages[quizIndex]} width="60%" height="60%" />
+          <img src={algorithmImages[quizIndex]} />
           <br />
           上記のフローチャートの空欄に当てはまるコードを答えてください．（セミコロンは不要です）{" "}
           <br />
@@ -234,7 +235,7 @@ export const QuizPage: React.FC = () => {
               type="text"
               ref={register({ required: true })}
             />
-            <div> {message2} </div>
+            {/* <div> {message2} </div> */}
             {errors.answer && (
               <div style={{ color: "red" }}>* 解答を入力してください。</div>
             )}
@@ -258,7 +259,7 @@ export const QuizPage: React.FC = () => {
               type="text"
               ref={register({ required: true })}
             />
-            <div> {message3} </div>
+            {/* <div> {message3} </div> */}
             {errors.answer && (
               <div style={{ color: "red" }}>* 解答を入力してください。</div>
             )}
