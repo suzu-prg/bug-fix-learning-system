@@ -6,9 +6,9 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "build": "rm -f 'dist/.js' && cross-env NODE_ENV=production webpack --bail --colors",
+    "build": "rm -f 'dist/.js' && cross-env NODE_ENV=production webpack --bail --color",
     "prettier": "prettier --write \"**/{.*/,}*.{css,htm,html,js,json,jsx,md,scss,ts,tsx,vue,yaml,yml}\" \"!**/packages/**\" \"!**/test-fixtures/**\" --color",
-    "start": "webpack serve --port 8080",
+    "start": "webpack serve",
     "typecheck": "tsc --noEmit --Pretty"
   },
   "dependencies": {

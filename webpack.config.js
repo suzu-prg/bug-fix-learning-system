@@ -1,6 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+const packageJson = require('./package.json');
+
 const isProduction = process.env.NODE_ENV === "production";
 const mode = isProduction ? "production" : "development";
 
@@ -11,6 +13,12 @@ module.exports = {
     publicPath: "/",
     filename: "[chunkhash].bundle.mjs",
     chunkFilename: "[chunkhash].chunk.mjs",
+  },
+  externals: {
+    firebase: 'firebase',
+    'firebase/app': 'firebase',
+    react: 'React',
+    'react-dom': 'ReactDOM',
   },
   mode,
   resolve: {
@@ -37,7 +45,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve("src", `index.ejs`),
+      template: path.resolve('src', `index.ejs`),
+      templateParameters: {
+        isProd: isProduction,
+        firebaseVersion: getDependencyVersion('firebase'),
+        reactVersion: getDependencyVersion('react'),
+      },
     }),
   ],
   devtool: isProduction ? false : "eval-source-map",
@@ -45,5 +58,10 @@ module.exports = {
     contentBase: [path.resolve("dist")],
     historyApiFallback: true,
     open: true,
+    port: 8080,
   },
 };
+
+function getDependencyVersion(dependencyName) {
+  return packageJson.dependencies[dependencyName].replace('^', '');
+}
