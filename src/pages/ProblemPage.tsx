@@ -42,17 +42,6 @@ void hanoi(int N, int d)
 　　shift(N-1, d);
 　　hanoi(N-1, d);
 }`,
-  `for (i = 1; i < n; i++) {
-    tmp = data[i];
-    if (data[i] > tmp) {
-        j = i;
-        do {
-            data[j] = data[j - 1];
-            j++;
-        } while (j > 0 && data[j] > tmp);
-        data[j] = tmp;
-    }
-}`,
 ];
 // replaced "\n" with "\\n"
 
@@ -88,17 +77,6 @@ void hanoi(int N, int d)
 　　hanoi(N-1, -d);
 　　shift(N, d);
 　　hanoi(N-1, -d);
-}`,
-  `for (i = 1; i < n; i++) {
-    tmp = data[i];
-    if (data[i - 1] > tmp) {
-        j = i;
-        do {
-            data[j] = data[j - 1];
-            j--;
-        } while (j > 0 && data[j - 1] > tmp);
-        data[j] = tmp;
-    }
 }`,
 ];
 // replaced "\n" with "\\n"

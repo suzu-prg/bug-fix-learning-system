@@ -11,15 +11,20 @@ const algorithmName: string[] = [
 
 const initialCode: string[] = [
   "",
-  `for (i = 1; i < n; i++) {
-    tmp = data[i];
-    if (data[i - 1] > tmp) {
-        j = i;
-        do {
-            data[j] = data[j - 1];
-            j--;
-        } while (j > 0 && data[j - 1] > tmp);
-        data[j] = tmp;
+  `#define MAX 100000
+int p[MAX];
+
+void Eratosthenes(){
+    for(int i = 0; i < MAX; i++){
+        p[i] = 1;
+    }
+    p[0] = 0; p[1] = 0;
+    for(int i = 2; i < sqrt(MAX); i++){
+        if(p[i]){
+            for(int j = 0; i * (j + 2) < MAX; j++){
+                p[i * (j + 2)] = 0;
+            }
+        }
     }
 }`,
   `// 呼び出しは hanoi(N, 1);
@@ -36,17 +41,6 @@ void hanoi(int N, int d)
 　　hanoi(N-1, -d);
 　　shift(N, d);
 　　hanoi(N-1, -d);
-}`,
-  `for (i = 1; i < n; i++) {
-    tmp = data[i];
-    if (data[i - 1] > tmp) {
-        j = i;
-        do {
-            data[j] = data[j - 1];
-            j--;
-        } while (j > 0 && data[j - 1] > tmp);
-        data[j] = tmp;
-    }
 }`,
 ];
 // replaced "\n" with "\\n"
