@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { firestore } from "../firebaseApp";
 import firebase from "firebase";
 
@@ -18,7 +18,7 @@ void Eratosthenes(){
     for(int i = 0; i < MAX; i++){
         p[i] = 1;
     }
-    p[0] = 0; p[1] = 0;
+    p[0] = 0; p[2] = 0;
     for(int i = 2; i < sqrt(MAX); i++){
         if(!p[i]){
             for(int j = 0; i * (j + 1) < MAX; j++){
@@ -117,6 +117,7 @@ export const ProblemPage: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [mutant, setMutant] = useState<string>(initialMutant[problemIndex]);
   const [answer, setAnswer] = useState<string>(initialAnswer[problemIndex]);
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
   const handleInput = (event: any): void => {
     const value = event.target.value;
@@ -141,6 +142,7 @@ export const ProblemPage: React.FC = () => {
       message: message,
       time: (performance.now() - start) / 1000,
     });
+    setIsFinished(true);
   };
 
   return (
@@ -160,7 +162,7 @@ export const ProblemPage: React.FC = () => {
         <br />
         ・SENDボタンでその修正が正しいかどうかが判定されます（correct or wrong）
         <br />
-        ・学習が終わったら，FINISHボタンを押してください．
+        ・学習が終わったら，FINISHボタンを押してください．押すと，確認問題へ進むリンクが画面の一番下に表示されます．
         <br />
         ・学習パートを終えるタイミングは自由です．（必ずしもバグ修正が終わったタイミングでなくても構いません）
         <br />
@@ -174,23 +176,37 @@ export const ProblemPage: React.FC = () => {
             resize: "none",
             width: 300,
             height: 300,
+            float: "left"
           }}
         />
       </div>
-      <button onClick={reset}>RESET</button>
-      <button onClick={send}>SEND</button>
-      {/* <button onClick={stop}>TIMER STOP</button> */}
-      <div>{message}</div>
-      <Link to={"/quiz/" + problemIndex + "/1"}>
-        <button onClick={stop}>FINISH</button>
-      </Link>
-      {/* <div>{Math.floor(time / 1000)} sec</div> */}
-      {/* <div>
-                <Link to={"/quiz/" + problemIndex + "/1"}>Proceed to a quiz page</Link>
-            </div>
-            <div>
-                <Link to="/">Return to the top page</Link>
-            </div> */}
+      {isFinished && message != "correct" && (
+        <div>
+          正解のコードはこちらです：
+          <pre>
+            <code>{initialAnswer[problemIndex]}</code>
+          </pre>
+        </div>
+      )}
+      <div style={{ clear: "left" }} >
+        <button onClick={reset}>RESET</button>
+        <button onClick={send}>SEND</button>
+        {/* <button onClick={stop}>TIMER STOP</button> */}
+        <div>{message}</div>
+        {isFinished || (
+          <button onClick={stop}>FINISH</button>
+        )}
+        <br />
+        {isFinished && (
+          <Link to={"/quiz/" + problemIndex + "/1"}>
+            確認問題へ進む
+          </Link>
+        )}
+        {/* <div>{Math.floor(time / 1000)} sec</div> */}
+      </div>
+
+
+
     </div>
   );
 };

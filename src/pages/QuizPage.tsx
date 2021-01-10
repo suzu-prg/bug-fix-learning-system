@@ -12,7 +12,6 @@ const algorithmName: string[] = [
   "",
   "エラトステネスのふるい",
   "ハノイの塔",
-  "挿入ソート",
 ];
 
 const choice: string[][] = [
