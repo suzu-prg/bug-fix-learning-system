@@ -163,9 +163,45 @@ export const ProblemPage: React.FC = () => {
       {isFinished && message != "correct" && (
         <div>
           正解のコードはこちらです：
+          {problemIndex == 1 && (
           <pre>
-            <code>{initialAnswer[problemIndex]}</code>
+            <code>  {`#define MAX 100000
+int p[MAX];
+
+void Eratosthenes(){
+    for(int i = 0; i < MAX; i++){
+        p[i] = 1;
+    }
+    p[0] = 0; `}<strong style={{color: "red"}}>p[1] = 0;</strong> {`
+    for(int i = 2; i < sqrt(MAX); i++){
+      `}<strong style={{color: "red"}}>if(p[i])</strong> {`{
+            for(int j = 0; i * `}<strong style={{color: "red"}}>(j + 2)</strong> {` < MAX; j++){
+                p[i * (j + 2)] = 0;
+            }
+        }
+    }
+}`}</code>
           </pre>
+          )}
+          {problemIndex == 2 && (
+          <pre>
+            <code>{  `// 呼び出しは hanoi(N, 1);
+void shift(int N, int d)
+{
+  if (d == 1)
+    printf(“皿%dを左に動かす.\\n”, N);
+  else if (d == -1)
+    printf(“皿%dを右に動かす.\\n”, N);
+}
+void hanoi(int N, int d)
+{
+　　if (N == 0) return;
+　　hanoi(N-1, -d);
+　　`}<strong style={{color: "red"}}>shift(N, d);</strong> {`
+　　`}<strong style={{color: "red"}}>hanoi(N-1, -d)</strong> {`
+}`}</code>
+          </pre>
+          )}
         </div>
       )}
       <div style={{ clear: "left" }}>
