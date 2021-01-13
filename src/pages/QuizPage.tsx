@@ -8,11 +8,7 @@ import { useForm } from "react-hook-form";
 
 const algorithmImages = [, algorithmImage1, algorithmImage2];
 
-const algorithmName: string[] = [
-  "",
-  "エラトステネスのふるい",
-  "ハノイの塔",
-];
+const algorithmName: string[] = ["", "エラトステネスのふるい", "ハノイの塔"];
 
 const choice: string[][] = [
   [],
@@ -75,11 +71,7 @@ N = 3 の時，6回目の hanoi() の呼び出しの時の引数を答えよ（�
 
 const answer1: number[] = [0, 1, 1, 4];
 
-const answer2: string[] = [
-  "",
-  "p[i * (j + 2)] = 0",
-  "hanoi(N-1, -d)",
-];
+const answer2: string[] = ["", "p[i * (j + 2)] = 0", "hanoi(N-1, -d)"];
 
 const answer3: string[] = ["", "7", "1 1"];
 

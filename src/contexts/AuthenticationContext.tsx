@@ -3,12 +3,13 @@ import React from "react";
 
 import { firestore } from "../firebaseApp";
 import { useHistory } from "react-router-dom";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 export interface Authentication {
   user?: firebase.User;
   userId?: string;
   isFirstGroup?: boolean;
-  changeAnonymousUser: () => boolean;
+  signOut: () => boolean;
   loading: boolean;
 }
 
@@ -16,7 +17,7 @@ export const AuthenticationContext = React.createContext<Authentication>({
   user: undefined,
   userId: undefined,
   isFirstGroup: undefined,
-  changeAnonymousUser: () => false,
+  signOut: () => false,
   loading: true,
 });
 
@@ -33,6 +34,18 @@ export function useAuthentication(): Authentication {
   return React.useContext(AuthenticationContext);
 }
 
+const uiConfig = {
+  signInFlow: "popup",
+  signInSuccessUrl: "/",
+  signInOptions: [
+    // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+  ],
+};
+
 export const AuthenticationProvider: React.FC = (props) => {
   const [loading, setLoading] = React.useState(true);
   const [isFirstGroup, setIsFirstGroup] = React.useState<boolean>();
@@ -40,10 +53,11 @@ export const AuthenticationProvider: React.FC = (props) => {
 
   React.useEffect(() => {
     if (!loading) return;
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) return;
+    console.log(userId);
 
     (async () => {
-      await firebase.auth().signInAnonymously();
-      const userId = firebase.auth().currentUser?.uid as string;
       const docRef = firestore
         .collection("userInfos")
         .doc(userId) as firebase.firestore.DocumentReference<UserInfo>;
@@ -75,7 +89,7 @@ export const AuthenticationProvider: React.FC = (props) => {
       }
       setLoading(false);
     })();
-  }, [loading]);
+  }, [loading, firebase.auth().currentUser]);
 
   return (
     <AuthenticationContext.Provider
@@ -83,7 +97,7 @@ export const AuthenticationProvider: React.FC = (props) => {
         user: firebase.auth().currentUser ?? undefined,
         userId: firebase.auth().currentUser?.uid,
         isFirstGroup,
-        changeAnonymousUser: React.useCallback(() => {
+        signOut: React.useCallback(() => {
           if (loading) return false;
 
           (async () => {
@@ -97,7 +111,17 @@ export const AuthenticationProvider: React.FC = (props) => {
         loading,
       }}
     >
-      {props.children}
+      {!firebase.auth().currentUser ? (
+        <>
+          <div>以下のフォームでサインインしてください。初めてサインインする際は、自動的に新しいアカウントが作成されます。</div>
+          <StyledFirebaseAuth
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
+        </>
+      ) : (
+        props.children
+      )}
     </AuthenticationContext.Provider>
   );
 };
