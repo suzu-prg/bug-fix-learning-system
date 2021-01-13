@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthentication } from "../contexts/AuthenticationContext";
 
 export const HomePage: React.FC = () => {
-  const { loading, isFirstGroup, userId, changeAnonymousUser } = useAuthentication();
+  const { loading, isFirstGroup, userId, signOut } = useAuthentication();
 
   return (
     <div>
@@ -33,7 +33,9 @@ export const HomePage: React.FC = () => {
       <br />
       問題2を解き終わったら，以下のアンケートに回答をお願いします
       <br />
-      <a href="https://forms.gle/hfA12Dv1eDA36iMM9">https://forms.gle/hfA12Dv1eDA36iMM9</a>
+      <a href="https://forms.gle/hfA12Dv1eDA36iMM9">
+        https://forms.gle/hfA12Dv1eDA36iMM9
+      </a>
     </div>
   );
 };

@@ -3,11 +3,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { firestore } from "../firebaseApp";
 import firebase from "firebase";
 
-const algorithmName: string[] = [
-  "",
-  "エラトステネスのふるい",
-  "ハノイの塔",
-];
+const algorithmName: string[] = ["", "エラトステネスのふるい", "ハノイの塔"];
 
 const initialMutant: string[] = [
   "",
@@ -128,9 +124,11 @@ export const ProblemPage: React.FC = () => {
       <div>
         <h2>学習パート[バグ修正問題]</h2>
         <br />
-        ・解説pdfの{algorithmName[problemIndex]}のページと下に表示されているコードについて，これらをじっくり読んでください．{" "}
+        ・解説pdfの{algorithmName[problemIndex]}
+        のページと下に表示されているコードについて，これらをじっくり読んでください．{" "}
         <br />
-        ・下に表示されているコードには<strong>1~3個のバグが含まれています．</strong>これを修正してください．
+        ・下に表示されているコードには
+        <strong>1~3個のバグが含まれています．</strong>これを修正してください．
         <br />
         ・ただし，バグの内容については，変数の追加や行の追加等は行わなくて済むものになっています．{" "}
         <br />
@@ -154,7 +152,7 @@ export const ProblemPage: React.FC = () => {
             resize: "none",
             width: 300,
             height: 300,
-            float: "left"
+            float: "left",
           }}
         />
       </div>
@@ -166,25 +164,18 @@ export const ProblemPage: React.FC = () => {
           </pre>
         </div>
       )}
-      <div style={{ clear: "left" }} >
+      <div style={{ clear: "left" }}>
         <button onClick={reset}>RESET</button>
         <button onClick={send}>SEND</button>
         {/* <button onClick={stop}>TIMER STOP</button> */}
         <div>{message}</div>
-        {isFinished || (
-          <button onClick={stop}>FINISH</button>
-        )}
+        {isFinished || <button onClick={stop}>FINISH</button>}
         <br />
         {isFinished && (
-          <Link to={"/quiz/" + problemIndex + "/1"}>
-            確認問題へ進む
-          </Link>
+          <Link to={"/quiz/" + problemIndex + "/1"}>確認問題へ進む</Link>
         )}
         {/* <div>{Math.floor(time / 1000)} sec</div> */}
       </div>
-
-
-
     </div>
   );
 };

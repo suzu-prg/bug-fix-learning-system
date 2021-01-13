@@ -7,24 +7,20 @@ import { HomePage } from "./pages/HomePage";
 import { useAuthentication } from "./contexts/AuthenticationContext";
 
 export const App: React.FC = () => {
-  const { loading, isFirstGroup, userId, changeAnonymousUser } = useAuthentication();
+  const { isFirstGroup, userId, signOut } = useAuthentication();
 
   return (
     <>
-      {loading ? (
-        <div>Loading ...</div>
-      ) : (
+      {
         <>
-          
           {process.env.NODE_ENV === "development" && (
             <div>
-              UserId: {userId}, isFirstGroup: {isFirstGroup ? 'Yes' : 'No'}
-              <br />
-              <button onClick={changeAnonymousUser}>
-                ユーザIDの変更（開発時のみ表示されるデバッグボタン）
-              </button>
+              UserId: {userId}, isFirstGroup: {isFirstGroup ? "Yes" : "No"}
             </div>
           )}
+          <div>
+            <button onClick={signOut}>サインアウト</button>
+          </div>
           <Switch>
             <Route path="/quiz/:quizId">
               <QuizPage />
@@ -40,7 +36,7 @@ export const App: React.FC = () => {
             </Route>
           </Switch>
         </>
-      )}
+      }
     </>
   );
 };

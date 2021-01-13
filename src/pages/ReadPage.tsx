@@ -3,11 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { firestore } from "../firebaseApp";
 import firebase from "firebase";
 
-const algorithmName: string[] = [
-  "",
-  "エラトステネスのふるい",
-  "ハノイの塔",
-];
+const algorithmName: string[] = ["", "エラトステネスのふるい", "ハノイの塔"];
 
 const initialCode: string[] = [
   "",
@@ -87,14 +83,14 @@ export const ReadPage: React.FC = () => {
       <div>
         <h2>学習パート[コードリーディング]</h2>
         <br />
-        ・解説pdfの{algorithmName[readIndex]}のページと下に表示されているコードについて，これらをじっくり読んでください．{" "}
+        ・解説pdfの{algorithmName[readIndex]}
+        のページと下に表示されているコードについて，これらをじっくり読んでください．{" "}
         <br />
         ・手元の環境でコンパイルして実行はしないでください
         <br />
         ・学習が終わったら，FINISHボタンを押してください．
         <br />
-        ・学習パートを終えるタイミングは自由です．{" "}
-        <br />
+        ・学習パートを終えるタイミングは自由です． <br />
         <br />
         <textarea
           value={value}

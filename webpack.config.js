@@ -17,7 +17,7 @@ module.exports = {
   },
   externals: {
     firebase: "firebase",
-    "firebase/app": "firebase",
+    "@firebase/app": "firebase",
     react: "React",
     "react-dom": "ReactDOM",
   },
