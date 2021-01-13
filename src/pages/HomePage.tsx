@@ -3,12 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthentication } from "../contexts/AuthenticationContext";
 
 export const HomePage: React.FC = () => {
-  const {
-    loading,
-    isFirstGroup,
-    userId,
-    signOut,
-  } = useAuthentication();
+  const { loading, isFirstGroup, userId, signOut } = useAuthentication();
 
   return (
     <div>

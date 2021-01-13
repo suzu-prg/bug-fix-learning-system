@@ -10,7 +10,6 @@ export interface Authentication {
   userId?: string;
   isFirstGroup?: boolean;
   signOut: () => boolean;
-  loading: boolean;
 }
 
 export const AuthenticationContext = React.createContext<Authentication>({
@@ -18,7 +17,6 @@ export const AuthenticationContext = React.createContext<Authentication>({
   userId: undefined,
   isFirstGroup: undefined,
   signOut: () => false,
-  loading: true,
 });
 
 interface UserInfo {
@@ -37,25 +35,27 @@ export function useAuthentication(): Authentication {
 const uiConfig = {
   signInFlow: "popup",
   signInSuccessUrl: "/",
-  signInOptions: [
-    // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-    // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-  ],
+  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
 };
 
 export const AuthenticationProvider: React.FC = (props) => {
   const [loading, setLoading] = React.useState(true);
+  const [initialized, setInitialized] = React.useState(false);
+  const [user, setUser] = React.useState<firebase.User>();
   const [isFirstGroup, setIsFirstGroup] = React.useState<boolean>();
   const history = useHistory();
 
   React.useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      setInitialized(true);
+      setUser(user ?? undefined);
+    });
+  }, []);
+
+  React.useEffect(() => {
     if (!loading) return;
-    const userId = firebase.auth().currentUser?.uid;
+    const userId = user?.uid;
     if (!userId) return;
-    console.log(userId);
 
     (async () => {
       const docRef = firestore
@@ -89,39 +89,46 @@ export const AuthenticationProvider: React.FC = (props) => {
       }
       setLoading(false);
     })();
-  }, [loading, firebase.auth().currentUser]);
+  }, [loading, user]);
+
+  const signOut = React.useCallback(() => {
+    (async () => {
+      await firebase.auth().signOut();
+      setLoading(true);
+      setIsFirstGroup(undefined);
+      history.push("/");
+    })();
+    return true;
+  }, []);
+
+  if (initialized && !user) {
+    return (
+      <>
+        <div>
+          申込み時に入力したメールアドレスでサインインしてください。初めてサインインする際は、自動的に新しいアカウントが作成されます。
+        </div>
+        <StyledFirebaseAuth
+          uiConfig={uiConfig}
+          firebaseAuth={firebase.auth()}
+        />
+      </>
+    );
+  }
+
+  if (loading) {
+    return <div>Loading ...</div>;
+  }
 
   return (
     <AuthenticationContext.Provider
       value={{
-        user: firebase.auth().currentUser ?? undefined,
-        userId: firebase.auth().currentUser?.uid,
+        user: user,
+        userId: user?.uid,
         isFirstGroup,
-        signOut: React.useCallback(() => {
-          if (loading) return false;
-
-          (async () => {
-            await firebase.auth().signOut();
-            setLoading(true);
-            setIsFirstGroup(undefined);
-            history.push("/");
-          })();
-          return true;
-        }, [loading]),
-        loading,
+        signOut,
       }}
     >
-      {!firebase.auth().currentUser ? (
-        <>
-          <div>以下のフォームでサインインしてください。初めてサインインする際は、自動的に新しいアカウントが作成されます。</div>
-          <StyledFirebaseAuth
-            uiConfig={uiConfig}
-            firebaseAuth={firebase.auth()}
-          />
-        </>
-      ) : (
-        props.children
-      )}
+      {props.children}
     </AuthenticationContext.Provider>
   );
 };
